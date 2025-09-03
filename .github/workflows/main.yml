@@ -1,0 +1,37 @@
+name: CI/CD Pipeline for AWS Web Server Monitoring
+
+on:
+  workflow_dispatch:   # allows manual or API trigger
+  push:                # optional: run automatically on push to main
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Tests
+        run: |
+          echo "✅ Running tests..."
+          # Add your test commands here
+          # pytest tests/ || echo "No tests found"
+
+      - name: Deploy Application (placeholder)
+        run: |
+          echo "🚀 Deploying AWS Web Server Monitoring app..."
+          # Add your AWS CLI or CloudFormation/Terraform commands here
+          # Example: aws s3 cp ./app s3://your-bucket-name --recursive
