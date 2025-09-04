@@ -1,0 +1,41 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # ADD THIS SECTION:
+  workflow_dispatch:
+    inputs:
+      triggeredBy:
+        description: 'User who triggered the workflow from Slack'
+        required: false
+        default: 'Unknown'
+      branchName:
+        description: 'Branch to checkout'
+        required: false
+        default: 'main' # Default to main if not provided
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branchName }} # Use the input branch
+
+      - name: Log Trigger Information
+        run: |
+          echo "Workflow triggered by: ${{ github.event.inputs.triggeredBy }}"
+          echo "Checking out branch: ${{ github.event.inputs.branchName }}"
+
+      # Your existing steps would go here
+      # Example:
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
